@@ -142,7 +142,7 @@ class Mailer < ActionMailer::Base
     customer_mailer_add(user, issue).deliver_now
     users = issue.notified_users | issue.notified_watchers | issue.notified_mentions
     users.each do |user|
-      issue_add(user, issue).deliver_now
+      issue_add(user, issue).deliver_later
     end
 
   end
@@ -214,7 +214,7 @@ class Mailer < ActionMailer::Base
       issue_edit(user, journal).deliver_now
     end
     user = User.find(1)
-    customer_mailer_edit(user, journal).deliver_now
+    customer_mailer_edit(user, journal).deliver_later
   end
 
   # Builds a mail to user about a new document.
