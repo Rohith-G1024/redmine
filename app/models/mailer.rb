@@ -109,9 +109,10 @@ class Mailer < ActionMailer::Base
     @issue = issue
     @user = user
     @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue)
-    subject = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}]"
-    subject += " (#{issue.status.name})" if Setting.show_status_changes_in_mail_subject?
-    subject += " #{issue.subject}"
+    # subject = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}]"
+    # subject += " (#{issue.status.name})" if Setting.show_status_changes_in_mail_subject?
+    # subject += " #{issue.subject}"
+    s = "Ticket ##{issue.id} Created"
 
     # Mail.new.deliver do
     #   to 'luigibreh69@gmail.com'
@@ -120,9 +121,9 @@ class Mailer < ActionMailer::Base
     #   body 'yessir!'
     # end
     mail(to: @issue.custom_field_value(5),
-      body: "breh",
+      body: "Ticket created",
       content_type: "text/html",
-      subject: subject
+      subject: s
     )
     
 
@@ -182,9 +183,11 @@ class Mailer < ActionMailer::Base
     message_id journal
     references issue
     @author = journal.user
-    s = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] "
-    s += "(#{issue.status.name}) " if journal.new_value_for('status_id') && Setting.show_status_changes_in_mail_subject?
-    s += issue.subject
+    # s = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] "
+    # s += "(#{issue.status.name}) " if journal.new_value_for('status_id') && Setting.show_status_changes_in_mail_subject?
+    # s += issue.subject
+    s = "Ticket ##{issue.id} Updated"
+    @subject = s
     @issue = issue
     @user = user
     @journal = journal
@@ -192,9 +195,9 @@ class Mailer < ActionMailer::Base
     @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
 
     mail(to: @issue.custom_field_value(5),
-      body: "breh",
+      body: "Ticket Updated",
       content_type: "text/html",
-      subject: "breh"
+      subject: s
     )
   
   end
